@@ -1,8 +1,28 @@
+//
+// Reference links
+// https://developer.garmin.com/connect-iq/connect-iq-basics/app-types/#widgets
+// https://developer.garmin.com/connect-iq/core-topics/glances/#glances
+//
+//
+//
+
 import Toybox.Activity;
 import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.Math;
 import Toybox.WatchUi;
+
+(:glance) 
+class MyGlanceView extends WatchUi.GlanceView {
+  function initialize() { GlanceView.initialize(); }
+
+  function onUpdate(dc) {
+    dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
+		dc.clear();
+		dc.setColor(Graphics.COLOR_ORANGE,Graphics.COLOR_TRANSPARENT);
+    dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Reading Monkey", Graphics.TEXT_JUSTIFY_CENTER);
+  }
+}
 
 class InfoWidgetView extends WatchUi.View {
   function initialize() { View.initialize(); }
@@ -19,7 +39,7 @@ class InfoWidgetView extends WatchUi.View {
   function onUpdate(dc as Dc) as Void {
     var info = Activity.getActivityInfo();
     var alt;
-    if (info has :altitude) {
+    if (info has : altitude) {
       alt = Math.round(info.altitude);
 
     } else {

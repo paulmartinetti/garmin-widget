@@ -21,6 +21,11 @@ class InfoWidgetApp extends Application.AppBase {
         return [ new InfoWidgetView() ];
     }
 
+    (:glance)    
+	function getGlanceView() {
+        return [ new MyGlanceView() ];
+    } 
+
 }
 
 function getApp() as InfoWidgetApp {
