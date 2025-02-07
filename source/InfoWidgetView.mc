@@ -12,24 +12,24 @@ import Toybox.Lang;
 import Toybox.Math;
 import Toybox.WatchUi;
 
-(:glance) 
-class MyGlanceView extends WatchUi.GlanceView {
+( : glance) class MyGlanceView extends WatchUi.GlanceView {
   function initialize() { GlanceView.initialize(); }
 
   function onUpdate(dc) {
-    //dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
-		//dc.clear();
-		//dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
-    //dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données", Graphics.TEXT_JUSTIFY_CENTER);
-    //dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->", Graphics.TEXT_JUSTIFY_CENTER);
-    var h = dc.getHeight()/3;
-    dc.setColor(0x000091,Graphics.COLOR_TRANSPARENT);
-    dc.fillCircle(0, h*1.5, h);
-    dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
-    dc.fillCircle(h*2, h*1.5, h);
-    dc.setColor(0xE1000F,Graphics.COLOR_TRANSPARENT);
-    dc.fillCircle(h*4, h*1.5, h);
-
+    // dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
+    // dc.clear();
+    // dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
+    // dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données",
+    // Graphics.TEXT_JUSTIFY_CENTER); dc.drawText(dc.getWidth()/2,
+    // dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->",
+    // Graphics.TEXT_JUSTIFY_CENTER);
+    var h = dc.getHeight() / 3;
+    dc.setColor(0x000091, Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(0, h * 1.5, h);
+    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(h * 2, h * 1.5, h);
+    dc.setColor(0xE1000F, Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(h * 4, h * 1.5, h);
   }
 }
 
@@ -59,6 +59,11 @@ class InfoWidgetView extends WatchUi.View {
     if (info has : ambientPressure) {
       press = info.ambientPressure;
 
+      if (press == null) {
+        press = 999;
+      }
+      // convert from Pascals to inches of Mercury
+      press *= 0.0002953;
     } else {
       press = 9999;
     }
@@ -70,7 +75,7 @@ class InfoWidgetView extends WatchUi.View {
 
     var pdStr = Lang.format("$1$", [press.format("%d")]);
     var pd = View.findDrawableById("Press") as Text;
-    pd.setText("Pressure: "+ pdStr);
+    pd.setText("Pressure: " + pdStr);
     // Call the parent onUpdate function to redraw the layout
     View.onUpdate(dc);
   }
