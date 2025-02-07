@@ -17,11 +17,19 @@ class MyGlanceView extends WatchUi.GlanceView {
   function initialize() { GlanceView.initialize(); }
 
   function onUpdate(dc) {
-    dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
-		dc.clear();
-		dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
-    dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données", Graphics.TEXT_JUSTIFY_CENTER);
-    dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->", Graphics.TEXT_JUSTIFY_CENTER);
+    //dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
+		//dc.clear();
+		//dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
+    //dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données", Graphics.TEXT_JUSTIFY_CENTER);
+    //dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->", Graphics.TEXT_JUSTIFY_CENTER);
+    var h = dc.getHeight()/3;
+    dc.setColor(Graphics.COLOR_BLUE,Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(0, h*1.5, h);
+    dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(h*2, h*1.5, h);
+    dc.setColor(Graphics.COLOR_RED,Graphics.COLOR_TRANSPARENT);
+    dc.fillCircle(h*4, h*1.5, h);
+
   }
 }
 
