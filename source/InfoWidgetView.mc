@@ -63,7 +63,7 @@ class InfoWidgetView extends WatchUi.View {
         press = 999;
       }
       // convert from Pascals to inches of Mercury
-      press *= 0.0002953;
+      press = press * 0.0002953;
     } else {
       press = 9999;
     }
@@ -72,10 +72,10 @@ class InfoWidgetView extends WatchUi.View {
     var altStr = Lang.format("$1$", [alt.format("%d")]);
     var view = View.findDrawableById("Alt") as Text;
     view.setText("Altitude: " + altStr);
-
-    var pdStr = Lang.format("$1$", [press.format("%d")]);
+    // format two decimal places
+    var pdStr = Lang.format("$1$", [press.format("%.2f")]);
     var pd = View.findDrawableById("Press") as Text;
-    pd.setText("Pressure: " + pdStr);
+    pd.setText("Pression: " + pdStr);
     // Call the parent onUpdate function to redraw the layout
     View.onUpdate(dc);
   }
