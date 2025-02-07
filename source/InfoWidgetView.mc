@@ -23,11 +23,11 @@ class MyGlanceView extends WatchUi.GlanceView {
     //dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données", Graphics.TEXT_JUSTIFY_CENTER);
     //dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->", Graphics.TEXT_JUSTIFY_CENTER);
     var h = dc.getHeight()/3;
-    dc.setColor(Graphics.COLOR_BLUE,Graphics.COLOR_TRANSPARENT);
+    dc.setColor(0x000091,Graphics.COLOR_TRANSPARENT);
     dc.fillCircle(0, h*1.5, h);
     dc.setColor(Graphics.COLOR_WHITE,Graphics.COLOR_TRANSPARENT);
     dc.fillCircle(h*2, h*1.5, h);
-    dc.setColor(Graphics.COLOR_RED,Graphics.COLOR_TRANSPARENT);
+    dc.setColor(0xE1000F,Graphics.COLOR_TRANSPARENT);
     dc.fillCircle(h*4, h*1.5, h);
 
   }
@@ -48,17 +48,29 @@ class InfoWidgetView extends WatchUi.View {
   function onUpdate(dc as Dc) as Void {
     var info = Activity.getActivityInfo();
     var alt;
+    var press;
+
     if (info has : altitude) {
       alt = Math.round(info.altitude);
 
     } else {
       alt = 9999;
     }
+    if (info has : ambientPressure) {
+      press = info.ambientPressure;
+
+    } else {
+      press = 9999;
+    }
     // drop the decimal
     // https://developer.garmin.com/connect-iq/api-docs/Toybox/Lang/Number.html#format-instance_function
     var altStr = Lang.format("$1$", [alt.format("%d")]);
     var view = View.findDrawableById("Alt") as Text;
     view.setText("Altitude: " + altStr);
+
+    var pdStr = Lang.format("$1$", [press.format("%d")]);
+    var pd = View.findDrawableById("Press") as Text;
+    pd.setText("Pressure: "+ pdStr);
     // Call the parent onUpdate function to redraw the layout
     View.onUpdate(dc);
   }
