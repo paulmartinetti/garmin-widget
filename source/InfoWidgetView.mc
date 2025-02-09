@@ -19,9 +19,11 @@ import Toybox.WatchUi;
     // dc.setColor(Graphics.COLOR_BLACK,Graphics.COLOR_BLACK);
     // dc.clear();
     // dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
+
     // dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données",
-    // Graphics.TEXT_JUSTIFY_CENTER); dc.drawText(dc.getWidth()/2,
-    // dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->",
+    // Graphics.TEXT_JUSTIFY_CENTER); 
+
+    // dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->",
     // Graphics.TEXT_JUSTIFY_CENTER);
     var h = dc.getHeight() / 3;
     dc.setColor(0x000091, Graphics.COLOR_TRANSPARENT);
@@ -30,6 +32,12 @@ import Toybox.WatchUi;
     dc.fillCircle(h * 2, h * 1.5, h);
     dc.setColor(0xE1000F, Graphics.COLOR_TRANSPARENT);
     dc.fillCircle(h * 4, h * 1.5, h);
+    // x and y coordinates were iterations of trial and error
+    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+    dc.drawText(12, 35, Graphics.FONT_LARGE,"J'", Graphics.TEXT_JUSTIFY_LEFT); 
+    dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+    dc.drawText(55, 35, Graphics.FONT_LARGE,"aime", Graphics.TEXT_JUSTIFY_LEFT); 
+
   }
 }
 
@@ -49,21 +57,23 @@ class InfoWidgetView extends WatchUi.View {
     var info = Activity.getActivityInfo();
     var alt;
     var press;
-
+    // 
     if (info has : altitude) {
       alt = Math.round(info.altitude);
 
     } else {
       alt = 9999;
     }
+    // pressure in Pascals captured from the watch sensor
+    // https://developer.garmin.com/connect-iq/api-docs/Toybox/Activity/Info.html#ambientPressure-var
     if (info has : ambientPressure) {
       press = info.ambientPressure;
-
+      // in simulator it's null because there is no pressure sensor in the laptop
       if (press == null) {
         press = 999;
       }
       // convert from Pascals to inches of Mercury
-      press = press * 0.0002953;
+      press *= 0.0002953;
     } else {
       press = 9999;
     }
