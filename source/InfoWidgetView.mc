@@ -34,9 +34,9 @@ import Toybox.WatchUi;
     dc.fillCircle(h * 4, h * 1.5, h);
     // x and y coordinates were iterations of trial and error
     dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-    dc.drawText(12, 35, Graphics.FONT_LARGE,"J'", Graphics.TEXT_JUSTIFY_LEFT); 
+    dc.drawText(14, 35, Graphics.FONT_LARGE,"J'aime", Graphics.TEXT_JUSTIFY_LEFT); 
     dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-    dc.drawText(55, 35, Graphics.FONT_LARGE,"aime", Graphics.TEXT_JUSTIFY_LEFT); 
+    dc.drawText(51, 35, Graphics.FONT_LARGE,"aim", Graphics.TEXT_JUSTIFY_LEFT); 
 
   }
 }
