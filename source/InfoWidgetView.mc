@@ -45,6 +45,7 @@ import Toybox.System;
 
 class InfoWidgetView extends WatchUi.View {
 
+  // assign global var that works between functions - Communications permission set in manifest.
   var _wifiAvail = "";
 
   function initialize() {
@@ -69,7 +70,7 @@ class InfoWidgetView extends WatchUi.View {
     }
   }
 
-  // This is how you call checkWifiConnection
+  // This is how you call checkWifiConnection - call at initialization
   function checkHomeWifi() {
     Communications.checkWifiConnection(method( : onWifiCheck));
   }
@@ -115,7 +116,7 @@ class InfoWidgetView extends WatchUi.View {
     var view = View.findDrawableById("Alt") as Text;
     view.setText("Altitude: " + altStr);
     
-    // format two decimal places
+    // format pressure two decimal places (currently using "Press" to display Wifi Oui ou Non)
     //var pdStr = Lang.format("$1$", [press.format("%.2f")]);
     var pd = View.findDrawableById("Press") as Text;
     //pd.setText("Pression: " + pdStr);*/
