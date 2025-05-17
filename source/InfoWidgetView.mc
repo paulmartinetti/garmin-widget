@@ -7,10 +7,12 @@
 //
 
 import Toybox.Activity;
+import Toybox.Communications;
 import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.Math;
 import Toybox.WatchUi;
+import Toybox.System;
 
 ( : glance) class MyGlanceView extends WatchUi.GlanceView {
   function initialize() { GlanceView.initialize(); }
@@ -21,10 +23,10 @@ import Toybox.WatchUi;
     // dc.setColor(0x12d9db,Graphics.COLOR_TRANSPARENT);
 
     // dc.drawText(dc.getWidth()/2, 5, Graphics.FONT_TINY,"Données",
-    // Graphics.TEXT_JUSTIFY_CENTER); 
-
-    // dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par ici -->",
     // Graphics.TEXT_JUSTIFY_CENTER);
+
+    // dc.drawText(dc.getWidth()/2, dc.getHeight()/2, Graphics.FONT_TINY,"Par
+    // ici -->", Graphics.TEXT_JUSTIFY_CENTER);
     var h = dc.getHeight() / 3;
     dc.setColor(0x000091, Graphics.COLOR_TRANSPARENT);
     dc.fillCircle(0, h * 1.5, h);
@@ -34,16 +36,38 @@ import Toybox.WatchUi;
     dc.fillCircle(h * 4, h * 1.5, h);
     // x and y coordinates were iterations of trial and error
     dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-    dc.drawText(14, 35, Graphics.FONT_LARGE,"J'aime", Graphics.TEXT_JUSTIFY_LEFT); 
+    dc.drawText(14, 35, Graphics.FONT_LARGE, "J'aime",
+                Graphics.TEXT_JUSTIFY_LEFT);
     dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-    dc.drawText(51, 35, Graphics.FONT_LARGE,"aim", Graphics.TEXT_JUSTIFY_LEFT); 
-
+    dc.drawText(51, 35, Graphics.FONT_LARGE, "aim", Graphics.TEXT_JUSTIFY_LEFT);
   }
 }
 
 class InfoWidgetView extends WatchUi.View {
-  function initialize() { View.initialize(); }
+  function initialize() {
+    View.initialize();
+    checkHomeWifi();
+  }
 
+  // Call this method to check Wi-Fi availability
+  function onWifiCheck(result as { :wifiAvailable as Lang.Boolean, :errorCode as Communications.WifiConnectionStatus }) as Void {
+    if (result != null) {
+      if (result[:wifiAvailable]) {
+        System.println("Wi-Fi is available!");
+      } else {
+        System.println("Wi-Fi is NOT available. Error code: " +
+                       result[:errorCode]);
+      }
+    } else {
+      System.println("Wi-Fi status check failed: null result");
+    }
+  }
+
+  // This is how you call checkWifiConnection
+  function checkHomeWifi() {
+    Communications.checkWifiConnection(method( : onWifiCheck));
+  }
+  
   // Load your resources here
   function onLayout(dc as Dc) as Void { setLayout(Rez.Layouts.MainLayout(dc)); }
 
@@ -57,7 +81,8 @@ class InfoWidgetView extends WatchUi.View {
     var info = Activity.getActivityInfo();
     var alt;
     var press;
-    // 
+    // var dw;
+    //
     if (info has : altitude) {
       alt = Math.round(info.altitude);
 
@@ -68,7 +93,8 @@ class InfoWidgetView extends WatchUi.View {
     // https://developer.garmin.com/connect-iq/api-docs/Toybox/Activity/Info.html#ambientPressure-var
     if (info has : ambientPressure) {
       press = info.ambientPressure;
-      // in simulator it's null because there is no pressure sensor in the laptop
+      // in simulator it's null because there is no pressure sensor in the
+      // laptop
       if (press == null) {
         press = 999;
       }
@@ -77,6 +103,7 @@ class InfoWidgetView extends WatchUi.View {
     } else {
       press = 9999;
     }
+
     // drop the decimal
     // https://developer.garmin.com/connect-iq/api-docs/Toybox/Lang/Number.html#format-instance_function
     var altStr = Lang.format("$1$", [alt.format("%d")]);
@@ -86,6 +113,7 @@ class InfoWidgetView extends WatchUi.View {
     var pdStr = Lang.format("$1$", [press.format("%.2f")]);
     var pd = View.findDrawableById("Press") as Text;
     pd.setText("Pression: " + pdStr);
+    // pd.setText("wifi: " + dw);
     // Call the parent onUpdate function to redraw the layout
     View.onUpdate(dc);
   }
