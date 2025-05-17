@@ -44,6 +44,9 @@ import Toybox.System;
 }
 
 class InfoWidgetView extends WatchUi.View {
+
+  var _wifiAvail = "";
+
   function initialize() {
     View.initialize();
     checkHomeWifi();
@@ -54,12 +57,15 @@ class InfoWidgetView extends WatchUi.View {
     if (result != null) {
       if (result[:wifiAvailable]) {
         System.println("Wi-Fi is available!");
+        _wifiAvail = "Oui";
       } else {
         System.println("Wi-Fi is NOT available. Error code: " +
                        result[:errorCode]);
+        _wifiAvail = "Non";
       }
     } else {
       System.println("Wi-Fi status check failed: null result");
+      _wifiAvail = "Non";
     }
   }
 
@@ -67,7 +73,7 @@ class InfoWidgetView extends WatchUi.View {
   function checkHomeWifi() {
     Communications.checkWifiConnection(method( : onWifiCheck));
   }
-  
+
   // Load your resources here
   function onLayout(dc as Dc) as Void { setLayout(Rez.Layouts.MainLayout(dc)); }
 
@@ -80,8 +86,7 @@ class InfoWidgetView extends WatchUi.View {
   function onUpdate(dc as Dc) as Void {
     var info = Activity.getActivityInfo();
     var alt;
-    var press;
-    // var dw;
+    //var press;
     //
     if (info has : altitude) {
       alt = Math.round(info.altitude);
@@ -91,7 +96,7 @@ class InfoWidgetView extends WatchUi.View {
     }
     // pressure in Pascals captured from the watch sensor
     // https://developer.garmin.com/connect-iq/api-docs/Toybox/Activity/Info.html#ambientPressure-var
-    if (info has : ambientPressure) {
+    /*if (info has : ambientPressure) {
       press = info.ambientPressure;
       // in simulator it's null because there is no pressure sensor in the
       // laptop
@@ -102,18 +107,19 @@ class InfoWidgetView extends WatchUi.View {
       press *= 0.0002953;
     } else {
       press = 9999;
-    }
+    }*/
 
     // drop the decimal
     // https://developer.garmin.com/connect-iq/api-docs/Toybox/Lang/Number.html#format-instance_function
     var altStr = Lang.format("$1$", [alt.format("%d")]);
     var view = View.findDrawableById("Alt") as Text;
     view.setText("Altitude: " + altStr);
+    
     // format two decimal places
-    var pdStr = Lang.format("$1$", [press.format("%.2f")]);
+    //var pdStr = Lang.format("$1$", [press.format("%.2f")]);
     var pd = View.findDrawableById("Press") as Text;
-    pd.setText("Pression: " + pdStr);
-    // pd.setText("wifi: " + dw);
+    //pd.setText("Pression: " + pdStr);*/
+    pd.setText("Wifi: " + _wifiAvail);
     // Call the parent onUpdate function to redraw the layout
     View.onUpdate(dc);
   }
